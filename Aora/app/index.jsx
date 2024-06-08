@@ -2,6 +2,7 @@ import { StatusBar } from "expo-status-bar";
 import { Redirect, router } from "expo-router";
 import { View, Text, Image, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import Custombutton from "../components/Custombutton"
 
 import { images } from "../constants";
 
@@ -11,11 +12,9 @@ const Welcome = () => {
     <SafeAreaView className="bg-primary h-full">
 
       <ScrollView
-        contentContainerStyle={{
-          height: "100%",
-        }}
+        contentContainerStyle={{ flexGrow: 1 }}
       >
-        <View className="w-full flex justify-center items-center h-full px-4">
+        <View className="w-full justify-center items-center min-h-[85vh] px-4">
           <Image
             source={images.logo}
             className="w-[130px] h-[84px]"
@@ -44,7 +43,13 @@ const Welcome = () => {
             Exploration with Aora
           </Text>
         </View>
+        <Custombutton
+        title = "Continue with Email"
+        handlePress = {() => {router.push("./sign-in")}}
+        containerStyles = "wt-full mt-7"
+        />    
       </ScrollView>
+      <StatusBar backgroundColor="#161622" style = "light" />
     </SafeAreaView>
   );
 };
