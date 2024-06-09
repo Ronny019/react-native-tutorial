@@ -6,6 +6,7 @@ import { View, Text, ScrollView, Dimensions, Alert, Image } from "react-native";
 import { images } from "../../constants";
 import Custombutton from "../../components/Custombutton";
 import FormField from "../../components/FormField";
+import { createUser } from "../../lib/appwrite";
 
 const SignUp = () => {
   const [isSubmitting, setSubmitting] = useState(false);
@@ -16,8 +17,17 @@ const SignUp = () => {
   });
 
   const submit = async () => {
-    if (form.email === "" || form.password === "") {
+    if (form.username === "" || form.email === "" || form.password === "") {
       Alert.alert("Error", "Please fill in all fields");
+    }
+    setSubmitting(true);
+    try {
+      const result = await createUser(form.email, form.password, form.username);
+      router.replace("/home");
+    } catch (error) {
+      Alert.alert("Error", error.message);
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -60,7 +70,7 @@ const SignUp = () => {
             otherStyles="mt-7"
           />
           <Custombutton
-            title="Sign In"
+            title="Sign Up"
             handlePress={submit}
             containerStyles="mt-7"
             isLoading={isSubmitting}
