@@ -5,7 +5,7 @@ export const appwriteConfig = {
     platform: 'com.jsm.aora',
     projectId: '6666178c002c33089f56',
     databaseId: '666618cf003116f87cd5',
-    userCollectionID: '666618e8003b4d66010f',
+    userCollectionId: '666618e8003b4d66010f',
     videoCollectionId: '666619040007febb8b41',
     storageId: '66661ad0000f6de278e5'
 }
@@ -34,18 +34,12 @@ export const createUser = async (email, password, username) => {
             password,
             username
         )
-        // const newAccount = await account.create(
-        //     ID.unique(),
-        //     "asasa",
-        //     "sasasas",
-        //     "rtyrtrtrt"
-        // )
         if(!newAccount) throw Error;
         const avatarUrl = avatars.getInitials(username);
         await signIn(email, password);
         const newUser = await databases.createDocument(
             appwriteConfig.databaseId,
-            appwriteConfig.userCollectionID,
+            appwriteConfig.userCollectionId,
             ID.unique(),
             {
               accountId: newAccount.$id,
@@ -71,3 +65,23 @@ export async function signIn(email, password) {
   }
 
 
+// Get Current User
+export async function getCurrentUser() {
+  try {
+    const currentAccount = await account.get();
+    if (!currentAccount) throw Error;
+
+    const currentUser = await databases.listDocuments(
+      appwriteConfig.databaseId,
+      appwriteConfig.userCollectionId,
+      [Query.equal("accountId", currentAccount.$id)]
+    );
+
+    if (!currentUser) throw Error;
+
+    return currentUser.documents[0];
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+}
