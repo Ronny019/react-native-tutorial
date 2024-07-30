@@ -34,7 +34,10 @@ export const createUser = async (email, password, username) => {
             password,
             username
         )
-        if(!newAccount) throw Error;
+        if(!newAccount){
+          console.log("error in account create")
+          throw Error; 
+        } 
         const avatarUrl = avatars.getInitials(username);
         await signIn(email, password);
         const newUser = await databases.createDocument(
@@ -50,6 +53,7 @@ export const createUser = async (email, password, username) => {
           );
           return newUser;
     } catch (error) {
+        console.log("error in db write during account create")
         throw new Error(error);
     }
 }
@@ -60,6 +64,7 @@ export async function signIn(email, password) {
   
       return session;
     } catch (error) {
+      console.log("error during sign in")
       throw new Error(error);
     }
   }
