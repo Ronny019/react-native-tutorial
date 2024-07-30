@@ -2,21 +2,20 @@ import { FlatList, StyleSheet, Text, View, Image } from 'react-native'
 import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import {images} from '../../constants'
+import { SearchInput } from "../../constants"
+
+
 const home = () => {
   return (
     <SafeAreaView className="bg-primary">
       <FlatList 
-        data={[{id: 1}]}
+        data={[{id: 1},{id: 2},{id: 3}]}
         keyExtractor={(item) => item.$id}
-      //   renderItem={({ item }) => (
-      //     <VideoCard
-      //       title={item.title}
-      //       thumbnail={item.thumbnail}
-      //       video={item.video}
-      //       creator={item.creator.username}
-      //       avatar={item.creator.avatar}
-      // />
-      // )}
+        renderItem={({ item }) => (
+          <Text className="text-3xl text-white">
+            {item.id}
+          </Text>
+      )}
       ListHeaderComponent={() => (
         <View className="flex my-6 px-4 space-y-6">
           <View className="flex justify-between items-start flex-row mb-6">
@@ -37,6 +36,7 @@ const home = () => {
               />
             </View>
           </View>
+          <SearchInput/>
           </View>
       )}
       />
